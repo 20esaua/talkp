@@ -20,6 +20,7 @@ public class Server {
                         while(this.isRunning()) {
                             try {
                                 Socket socket = serverSocket.accept();
+
                             } catch(Exception e) {
                                 e.printStackTrace();
                             }
