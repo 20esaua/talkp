@@ -1,11 +1,13 @@
 #!/bin/bash
 
-set -e
+rm -rf bin > /dev/null 2>&1
+mkdir bin
 
-rm bin/*
+set -e
 
 cd src
 
-javac Main.java -d ../bin
+javac -cp .:../lib/* Main.java -d ../bin
 cd ../bin
-java Main
+clear
+java -cp .:../lib/* Main $@
