@@ -23,6 +23,8 @@ public class Main {
             }
 
             user = user.replaceAll("[^A-Za-z0-9]", "").trim().toLowerCase();
+            if(user.length() == 0)
+                user = System.getProperty("user.name");
 
             Client client = new Client(user, host, port);
             client.start();

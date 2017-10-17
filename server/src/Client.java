@@ -80,8 +80,8 @@ public class Client {
      */
 
     public void handle(String input) {
-        JSONObject o = new JSONObject(input);
         try {
+            JSONObject o = new JSONObject(input);
             if(username.length() == 0 && o.getInt("type") == 0) {
                 String tmp = o.getString("username").toLowerCase().replaceAll("[^A-Za-z0-9]", "").trim().substring(0, Math.min(Server.MAX_USERNAME_LENGTH, o.getString("username").trim().length())); // limit check string & remove nonalphanumeric chars
                 if(tmp.length() != 0) {
