@@ -115,6 +115,9 @@ public class Client {
                 Logger.warn(obj.getString("message"));
                 stop();
                 break;
+            case 3:
+                // parameter `public` is key
+                break;
         }
     }
 

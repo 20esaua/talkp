@@ -24,7 +24,10 @@ public class Client {
         } catch(Exception e) {
             Logger.warn("Failed to accept new client!");
             e.printStackTrace();
+            stop();
         }
+
+        this.write(new JSONObject().put("type", 3).put("public", this.getServer().getKey().getPublic()));
     }
 
     public void start() {
@@ -77,6 +80,7 @@ public class Client {
      * 0 = online, username = status update on user
      * 1 = username, message = send a message
      * 2 = message = server going down for [message] reason
+     * 3 = public = share public key with client
      */
 
     public void handle(String input) {

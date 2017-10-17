@@ -6,10 +6,14 @@ import org.json.*;
 public class Server {
     public static final int MAX_USERNAME_LENGTH = 15;
     public static final int MAX_MESSAGE_LENGTH = 1000;
+    public static final boolean USES_RSA = false;
 
     private int port = 25678;
     private boolean running = false;
+
+
     private List<Client> clients = new ArrayList<>();
+    private Keys keys = null;
 
     private Scanner scanner = null;
 
@@ -33,6 +37,7 @@ public class Server {
                 public void run() {
                     try {
                         ServerSocket serverSocket = new ServerSocket(port);
+                        Server.this.keys = new Keys();
                         Logger.info("Server starting...");
                         while(Server.this.isRunning()) {
                             try {
@@ -114,6 +119,10 @@ public class Server {
         }
 
         Logger.info("Goodbye!");
+    }
+
+    public Keys getKey() {
+        return this.keys;
     }
 
     public List<Client> getClients() {
