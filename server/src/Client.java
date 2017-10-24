@@ -13,6 +13,7 @@ public class Client {
 
     public boolean running = false;
     public String username = "";
+    public boolean mute = false;
 
     public Client(Server server, Socket socket) throws Exception {
         this.socket = socket;
@@ -88,7 +89,13 @@ public class Client {
             JSONObject o = new JSONObject(input);
             if(username.length() == 0 && o.getInt("type") == 0) {
                 String tmp = o.getString("username").toLowerCase().replaceAll("[^A-Za-z0-9]", "").trim().substring(0, Math.min(Server.MAX_USERNAME_LENGTH, o.getString("username").trim().length())); // limit check string & remove nonalphanumeric chars
-                if(tmp.length() != 0) {
+
+                if(this.getServer().ban.contains(tmp)) {
+                    write(new JSONObject().put("type", 2).put("message", "Server is going down NOW!"));
+                    return;
+                }
+
+                if(tmp.length() != 0 && !tmp.equalsIgnoreCase("SERVER")) {
                     boolean valid = true;
                     for(Client client : this.getServer().getClients()) // check if username is taken
                         if(tmp.equals(client.username))
@@ -116,12 +123,32 @@ public class Client {
                 }
             } else {
                 if(username.length() != 0) {
-                    if(o.getInt("type") == 1) {
+                    if(o.getInt("type") == 1 && !mute) {
                         String msg = o.getString("message").trim().substring(0, Math.min(Server.MAX_MESSAGE_LENGTH, o.getString("message").trim().length()));
                         Logger.msg(username, msg);
-                        this.getServer().writeAll(new JSONObject().put("type", 1).put("username", username).put(
-                            "message", msg
-                        ));
+
+                        boolean cmd = false;
+
+                        if(msg.equalsIgnoreCase("/list")) {
+                            cmd = true;
+
+                            StringBuilder b = new StringBuilder(username + ": Users online:\n");
+
+                            for(Client c : this.getServer().getClients())
+                                if(c.username.length() != 0)
+                                    b.append("- " + c.username + "\n");
+
+                            this.getServer().writeAll(new JSONObject().put("type", 1).put("username", "SERVER").put(
+                                "message", b.toString()
+                            ));
+                        } else {
+
+                        }
+
+                        if(!cmd)
+                            this.getServer().writeAll(new JSONObject().put("type", 1).put("username", username).put(
+                                "message", msg
+                            ));
                     }
                 }
             }

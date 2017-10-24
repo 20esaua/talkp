@@ -60,8 +60,11 @@ public class Client {
                 new Thread(new Runnable() {public void run() {try {while(Client.this.isRunning()) {
                     // keyboard
                     String line = scanner.nextLine();
-                    if(line != null && line.trim().length() != 0)
+                    if(line != null && line.trim().length() != 0) {
+                        if(line.toLowerCase().trim().startsWith("/exit"))
+                            stop();
                         sendMessage(line);
+                    }
                 }} catch(Exception e) {Logger.err("Unknown error encountered. Exiting!"); e.printStackTrace(); stop();}}}).start();
 
                 this.running = true;

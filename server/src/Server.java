@@ -11,7 +11,7 @@ public class Server {
     private int port = 25678;
     private boolean running = false;
 
-
+    protected List<String> ban = new ArrayList<>();
     private List<Client> clients = new ArrayList<>();
     private Keys keys = null;
 
@@ -72,6 +72,30 @@ public class Server {
                             case "x":
                                 stop();
                                 break;
+                            case "mute":
+                                if(split.length != 2) {
+                                    for(Client c : getClients()) {
+                                        if(c.username.equalsIgnoreCase(split[1]))
+                                            c.mute = Boolean.parseBoolean(split[2]);
+                                    }
+                                } else {
+                                    Logger.info("Syntax: mute <user> <true/false>");
+                                }
+                                break;
+                            case "ban":
+                                if(split.length != 2) {
+                                    if(split[2].equalsIgnoreCase("true")) {
+                                        if(ban.contains(split[1].toLowerCase()))
+                                            break;
+                                        else
+                                            ban.add(split[1].toLowerCase());
+                                    } else {
+                                        ban.remove(split[1].toLowerCase());
+                                    }
+                                } else {
+                                    Logger.info("Syntax: ban <user> <true/false>");
+                                    break;
+                                }
                             case "kick":
                                 if(split.length != 1) {
                                     for(Client client : getClients())
