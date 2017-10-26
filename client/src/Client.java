@@ -41,7 +41,7 @@ public class Client {
                         handle(input);
                     else
                         stop();
-                }} catch(Exception e) {Logger.err("Unknown error encountered. Exiting!"); e.printStackTrace(); System.out.print(Color.RESET); stop();}}}).start();
+                }} catch(Exception e) {Logger.err("Unknown error encountered. Exiting!" + Color.RESET); e.printStackTrace(); stop();}}}).start();
 
                 new Thread(new Runnable() {public void run() {try {while(Client.this.isRunning()) {
                     // write
@@ -52,7 +52,7 @@ public class Client {
                         writer.println(stack.pop());
                         writer.flush();
                     }
-                }} catch(Exception e) {Logger.err("Unknown error encountered. Exiting!"); e.printStackTrace(); stop();}}}).start();
+                }} catch(Exception e) {Logger.err("Unknown error encountered. Exiting!" + Color.RESET); e.printStackTrace(); stop();}}}).start();
 
                 // login
                 write(new JSONObject().put("type", 0).put("username", this.getUsername()).put("online", true));
@@ -88,7 +88,7 @@ public class Client {
             this.socket.close();
             //this.scanner.close();
         } catch(Exception e) {
-            Logger.err("Failed to properly shut down sockets. Exiting!");
+            Logger.err("Failed to properly shut down sockets. Exiting!" + Color.RESET);
             e.printStackTrace();
             System.exit(1);
         }
@@ -111,6 +111,13 @@ public class Client {
                 if(obj.getString("message").equalsIgnoreCase("/clear")) {
                     clear();
                     Logger.msg(obj.getString("username"), Color.ITALIC + "Cleared the screen." + Color.RESET);
+                } else if(obj.getString("message").toLowerCase().startsWith("/notify")) {
+                    try {
+                        String msg = obj.getString("message").substring(7).trim();
+                        Runtime.getRuntime().exec("notify-send " + obj.getString("username") + ": " + (msg.length() == 0 ? "New message" : msg));
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
                 } else
                     Logger.msg(obj.getString("username"), obj.getString("message"));
                 break;

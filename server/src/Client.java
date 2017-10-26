@@ -118,7 +118,7 @@ public class Client {
 
                     username = tmp;
 
-                    Logger.broadcast(username + " joined the chat.");
+                    Logger.broadcast(username + " joined the chat (" + socket.getRemoteSocketAddress().toString() + ").");
                     this.getServer().writeAll(new JSONObject().put("type", 0).put("username", username).put("online", true));
                 }
             } else {
