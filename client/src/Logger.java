@@ -13,9 +13,9 @@ public class Logger {
             public void run() {
                 switch(tchar) {
                     case '/':
-                        tchar = '–';
+                        tchar = '\u2013';
                         break;
-                    case '–':
+                    case '\u2013':
                         tchar = '\\';
                         break;
                     case '\\':
