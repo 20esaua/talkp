@@ -41,7 +41,7 @@ public class Client {
                         handle(input);
                     else
                         stop();
-                }} catch(Exception e) {Logger.err("Unknown error encountered. Exiting!"); e.printStackTrace(); stop();}}}).start();
+                }} catch(Exception e) {Logger.err("Unknown error encountered. Exiting!"); e.printStackTrace(); System.out.print(Color.RESET); stop();}}}).start();
 
                 new Thread(new Runnable() {public void run() {try {while(Client.this.isRunning()) {
                     // write
