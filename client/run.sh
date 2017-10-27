@@ -1,7 +1,7 @@
 #!/bin/bash
 
-rm -rf /home/ths/talkp/client/bin/ > /dev/null 2>&1
-mkdir /home/ths/talkp/client/bin
+rm -rf ./bin/ > /dev/null 2>&1
+mkdir ./bin
 
 set -e
 
