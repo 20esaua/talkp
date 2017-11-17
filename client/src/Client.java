@@ -114,7 +114,7 @@ public class Client {
                 } else if(obj.getString("message").toLowerCase().startsWith("/notify")) {
                     try {
                         String msg = obj.getString("message").substring(7).trim();
-                        Runtime.getRuntime().exec("notify-send " + obj.getString("username") + ": " + (msg.length() == 0 ? "New message" : msg));
+                        Runtime.getRuntime().exec(new String[] {"notify-send", obj.getString("username") + ": " + (msg.length() == 0 ? "New message" : msg)});
                     } catch(Exception e) {
                         e.printStackTrace();
                     }
